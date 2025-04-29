@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Pressable, Text, TextInput, ToastAndroid, View } from 'react-native'
 import { ScreenLayout } from './ScreenLayout'
 import { createStyles } from '../styles/styles'
@@ -21,15 +21,16 @@ export const LoginScreen = () => {
     const styles = useMemo(() => createStyles(themeColors), [ themeColors ]);
 
     const { email, password, onInputChange, onResetForm } = useForm(initialState);
-    const [ showPassword, setShowPassword ] = useState(false)
+    const [ showPassword, setShowPassword ] = useState(false);
+    const [ formSubmited, setFormSubmited ] = useState(false);
 
-    const { status } = useSelector(state => state.auth);
+    const { status, errorMessage } = useSelector(state => state.auth);
 
     const isCheckingAuth = useMemo(() => status === 'checking', [ status ]);
 
     const onSubmit = () => {
+        setFormSubmited(true);
         dispatch(startLoginWithEmailPassword({ email, password }));
-        showToast('Login button pressed')
     }
 
     const onRegister = () => {
@@ -39,6 +40,15 @@ export const LoginScreen = () => {
     const showToast = (message) => {
         ToastAndroid.show(message, ToastAndroid.LONG);
     };
+
+    useEffect(() => {
+        if (errorMessage && formSubmited) {    
+            showToast(errorMessage);
+        }
+
+        setFormSubmited(false);
+
+    }, [ errorMessage, formSubmited ]);
 
     return (
         <ScreenLayout>

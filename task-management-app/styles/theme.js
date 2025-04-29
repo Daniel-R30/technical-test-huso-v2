@@ -4,6 +4,7 @@ export const colors = {
     gray: '#C6C5B9', //silver
     mainColor: '#62929E', //blue (munsell)
     secondaryColor: '#546A7B', //payne's grey
+    red: '#D94F4F', //red (pigment)
 };
 
 const lightTheme = {

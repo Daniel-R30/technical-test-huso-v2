@@ -21,6 +21,11 @@ export const createStyles = themeColors =>
 			fontSize: 16,
 			fontWeight: 'regular',
 		},
+        textError: {
+			color: colors.red,
+			fontSize: 14,
+			fontWeight: 'bold',
+		},
         input: {
             width: '100%',
             padding: 12,
@@ -29,6 +34,11 @@ export const createStyles = themeColors =>
             borderWidth: 1,
             backgroundColor: themeColors.backgroundColor,
             color: themeColors.text,
+        },
+        inputGroup:{
+            width: '100%',
+            flexDirection: 'column',
+            gap: 4,
         },
         button:{
             width: '80%',

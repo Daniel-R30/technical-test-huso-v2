@@ -44,7 +44,6 @@ export const startLoginWithEmailPassword = ({ email, password }) => {
 		if (!ok) return dispatch(logout({ errorMessage }));
 
         const { displayName, phoneNumber } = await getUserDB(uid);
-
 		await dispatch(login({ uid, displayName, email, phoneNumber }));
 
 		router.replace('/');
