@@ -12,9 +12,7 @@ export const startSetTasks = () => {
 
 export const startAddTasks = (task) => {
     return async dispatch => {
-        const { ok, photoUrl } = await uploadTaskPhotoStorage(task.image, task.id)
-        
-        if(!ok) return
+        const photoUrl = await uploadTaskPhotoStorage(task.image, task.id)
 
         task.image = photoUrl;
         await addTaskDB(task);

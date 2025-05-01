@@ -12,11 +12,8 @@ export const uploadTaskPhotoStorage = async (uri, taskID) => {
     
         const photoUrl = await getDownloadURL(taskPhotoRef);
         
-        return {
-            ok: true,
-            photoUrl
-        };
-
+        return photoUrl
+        
     } catch (error) {
         const errorMessage = error.message;
 		console.error('Error adding tasks from DB:', errorMessage);

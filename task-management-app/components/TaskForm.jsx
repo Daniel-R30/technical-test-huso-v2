@@ -29,7 +29,6 @@ const assignedItems = [ 'Me', 'Other' ]
 
 export const TaskForm = () => {
     const dispatch = useDispatch();
-    const router = useRouter();
 
     const { themeColors } = useTheme();
     const styles = useMemo(() => createStyles(themeColors), [ themeColors ]);
@@ -45,7 +44,8 @@ export const TaskForm = () => {
         assigned,
         onInputChange,
         isFormValid,
-        formState
+        formState,
+        onResetForm
     } = useForm(initialState, formValidations);
 
     const [ formSubmited, setFormSubmited ] = useState(false);
@@ -69,12 +69,18 @@ export const TaskForm = () => {
 
         if (!isFormValid) return showToast('Please check the form errors')
 
+        const timestamp= Date.now();
+
         const task = {
             ...formState,
-            id: Date.now()
+            id: timestamp,
+            timestamp: timestamp
         }
 
         dispatch(startAddTasks(task));
+        onResetForm();
+        setFormSubmited(false);
+        showToast('Task Uploaded')
     }
 
     const showToast = (message) => {
@@ -98,6 +104,8 @@ export const TaskForm = () => {
 
             <View style={ styles.inputGroup }>
                 <TextInput
+                    multiline
+                    numberOfLines={4}
                     style={ styles.input }
                     placeholder='Description'
                     placeholderTextColor={ themeColors.text }
