@@ -1,32 +1,36 @@
-import { useMemo } from 'react';
-import { Pressable, Text } from 'react-native'
+import { useEffect, useMemo, useState } from 'react';
 import { ScreenLayout } from './ScreenLayout'
 import { useTheme } from '../hooks/useTheme'
 import { createStyles } from '../styles/styles'
 import { useDispatch, useSelector } from 'react-redux';
-import { startLogout } from '../store/auth/thunks';
+import { Header } from '../components/Header';
+import { TasksList } from '../components/TasksList';
+import { startSetTasks } from '../store/tasks/thunks';
+import { FloatingButton } from '../components/FloatingButton';
+import { useRouter } from 'expo-router';
 
 export const HomeScreen = () => {
     const dispatch = useDispatch();
-    const {uid, displayName, phoneNumber, email} = useSelector(state => state.auth);
+    const router = useRouter();
+
+    const { tasks, status } = useSelector(state => state.tasks);
 
     const { themeColors } = useTheme();
     const styles = useMemo(() => createStyles(themeColors), [ themeColors ]);
 
-    const onLogout = () => {
-        dispatch(startLogout())
-        console.log('Logout button pressed')
+    useEffect(() => {
+        dispatch(startSetTasks());
+    }, [])
+
+    const floatingButtonAction = () => {
+        router.navigate('/taskDetail?type=add')
     }
+
     return (
         <ScreenLayout>
-            <Text style={ styles.text }>Home Screen</Text>
-            <Text style={ styles.text }>{uid+' '+ displayName+' '+ phoneNumber+' '+email}</Text>
-            <Pressable
-                style={ styles.secundaryButton }
-                onPress={ onLogout }
-            >
-                <Text style={ styles.buttonText }>Logout</Text>
-            </Pressable>
+            <Header title={ 'Task List' }/>
+            <TasksList tasks={ tasks }/>
+            <FloatingButton action={ floatingButtonAction } />
         </ScreenLayout>
     )
 }

@@ -59,7 +59,7 @@ export const startLogout = () => {
 
 export const startDeletingUser = () => {
     return async dispatch => {
-        const {ok, message} = await deleteCurrentUser();
+        const { ok, message } = await deleteCurrentUser();
 
         if (ok) {
             return dispatch(logout());
