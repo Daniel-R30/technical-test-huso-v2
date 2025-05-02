@@ -3,6 +3,7 @@ import { Header } from '../components/Header'
 import { useLocalSearchParams } from 'expo-router';
 import { TaskDetail } from '../components/TaskDetail'
 import { TaskForm } from '../components/TaskForm';
+import { useSelector } from 'react-redux';
 
 export const TaskDetailscreen = () => {
     const { type, id } = useLocalSearchParams(); 

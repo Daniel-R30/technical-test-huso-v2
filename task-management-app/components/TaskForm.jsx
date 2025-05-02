@@ -87,8 +87,6 @@ export const TaskForm = () => {
         ToastAndroid.show(message, ToastAndroid.LONG);
     };
 
-
-
     return (
         <>
             <View style={ styles.inputGroup }>
