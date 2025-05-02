@@ -9,7 +9,7 @@ import {
 } from '../../firebase/authProviders';
 import { checkingCredentials, login, logout } from './authSlice';
 
-export const startCreatingUserWithEmailPassword = ({
+export const startCreateUserWithEmailPassword = ({
 	displayName,
     phoneNumber,
     email,
@@ -43,12 +43,21 @@ export const startLoginWithEmailPassword = ({ email, password }) => {
 
 		if (!ok) return dispatch(logout({ errorMessage }));
 
-        const { displayName, phoneNumber } = await getUserDB(uid);
+        const { displayName, phoneNumber } = await getUserDB(uid);        
 		await dispatch(login({ uid, displayName, email, phoneNumber }));
 
 		router.replace('/');
 	};
 };
+
+export const startLoginOnAuthStateChanged =({ uid }) => {
+    return async dispatch => {
+        const { displayName, email, phoneNumber } = await getUserDB(uid);        
+		await dispatch(login({ uid, displayName, email, phoneNumber }));
+
+        router.replace('/');
+    }
+}
 
 export const startLogout = () => {
 	return async dispatch => {
@@ -57,7 +66,7 @@ export const startLogout = () => {
 	};
 };
 
-export const startDeletingUser = () => {
+export const startDeleteUser = () => {
     return async dispatch => {
         const { ok, message } = await deleteCurrentUser();
 

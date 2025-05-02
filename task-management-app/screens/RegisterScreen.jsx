@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useTheme } from '../hooks/useTheme'
 import { useForm } from '../hooks/useForm';
 import { useRouter } from 'expo-router';
-import { startCreatingUserWithEmailPassword } from '../store/auth/thunks';
+import { startCreateUserWithEmailPassword } from '../store/auth/thunks';
 
 const initialState = {
     displayName: '',
@@ -54,7 +54,7 @@ export const RegisterScreen = () => {
 
         if (!isFormValid) return showToast('Please check the form errors')
 
-        dispatch(startCreatingUserWithEmailPassword({
+        dispatch(startCreateUserWithEmailPassword({
              displayName,
              phoneNumber,
              email,
@@ -128,7 +128,6 @@ export const RegisterScreen = () => {
                 >
                     <Text style={ styles.buttonText }>Register</Text>
                 </Pressable>
-
 
                 <Pressable
                     style={ styles.secundaryButton }

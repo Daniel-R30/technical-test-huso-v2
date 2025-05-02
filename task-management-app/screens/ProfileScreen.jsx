@@ -6,6 +6,7 @@ import { Header } from '../components/Header';
 import { Pressable, Text } from 'react-native';
 import { createStyles } from '../styles/styles';
 import { startLogout } from '../store/auth/thunks';
+import { cleanTasks } from '../store/tasks/tasksSlice';
 
 export const ProfileScreen = () => {
     const dispatch = useDispatch();
@@ -16,7 +17,7 @@ export const ProfileScreen = () => {
 
     const onLogout = () => {
         dispatch(startLogout())
-        console.log('Logout button pressed')
+        dispatch(cleanTasks())
     }
     return (
         <ScreenLayout>
