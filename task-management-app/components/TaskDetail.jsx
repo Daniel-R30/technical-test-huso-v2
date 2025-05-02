@@ -5,7 +5,7 @@ import { useMemo } from 'react';
 import { createStyles } from '../styles/styles';
 import { useForm } from '../hooks/useForm';
 import { Picker } from '@react-native-picker/picker';
-import { updateTask } from '../store/tasks/tasksSlice';
+import { startUpdateAssignedTask, startUpdateStatusTask } from '../store/tasks/thunks';
 
 const statusItems = [ 'To do', 'In progress', 'Completed' ]
 const assignedItems = [ 'Me', 'Other' ]
@@ -27,44 +27,25 @@ export const TaskDetail = ({ id }) => {
         status,
         assigned,
         onInputChange,
-        isFormValid,
-        formState,
-        onResetForm
     } = useForm(initialState);
-
-    const updateAssigned = async (id, value) => {
-        const FUNCTION_URL = 'https://us-central1-huso-todo-app-b3d48.cloudfunctions.net/updateAssigned';
-
-        try {
-            const response = await fetch(FUNCTION_URL, {
-                method: "POST",
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    path: `/tasks/${ id }`,
-                    newAssigned: value
-                }),
-            });
-
-            const result = await response.text();
-            console.log("Respuesta del servidor:", result);
-        } catch (err) {
-            console.error("Error al llamar a updateResponsible:", err);
-        }
-    };
 
     const showToast = (message) => {
         ToastAndroid.show(message, ToastAndroid.LONG);
     };
 
     const onSave = () => {
+        if (task.status === 'Completed') return showToast('This task has been completed, you cannot edit it.');
+
         if (initialState.assigned === assigned && initialState.status === status) return showToast('You have not modified any data');
 
         if(initialState.assigned !== assigned){
-            updateAssigned(task.id, assigned);
-            dispatch(updateTask({ ...task, assigned: assigned }))
+            dispatch(startUpdateAssignedTask(task,assigned))
             showToast('The Assigned was changed correctly')
+        }
+
+        if(initialState.status !== status){
+            dispatch(startUpdateStatusTask(task,status));
+            showToast('The Status was changed correctly')
         }
     }
 

@@ -7,18 +7,20 @@ import { startSetTasks } from '../store/tasks/thunks';
 import { FloatingButton } from '../components/FloatingButton';
 import { useRouter } from 'expo-router';
 import { SegmentedControl } from '../components/SegmentedControl';
+import { startSetCompletedTasks } from '../store/CompletedTask/thunks';
 
 export const HomeScreen = () => {
     const dispatch = useDispatch();
     const router = useRouter();
 
     const { tasks, status } = useSelector(state => state.tasks);
-    const [completedTasks, setCompletedTasks] = useState([])
+    const { completedTasks } = useSelector(state => state.completedTasks);
 
     const [ selectedView, setSelectedView ] = useState('active')
 
     useEffect(() => {
         dispatch(startSetTasks());
+        dispatch(startSetCompletedTasks());
     }, [])
 
     const floatingButtonAction = () => {

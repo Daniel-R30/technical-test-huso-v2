@@ -1,3 +1,4 @@
+require('dotenv').config();
 const functions = require('firebase-functions/v1');
 const admin = require('firebase-admin');
 const knex = require('knex');
@@ -29,6 +30,17 @@ exports.updateAssigned = functions.https.onRequest(async (req, res) => {
 	}
 });
 
+exports.getCompletedTasks = functions.https.onRequest(async (req, res) => {
+    try {
+      const tasks = await db('completed_tasks')
+        .select('id', 'title', 'description', 'image', 'assigned', 'timestamp')
+      res.status(200).json(tasks);
+    } catch (error) {
+      console.error('Error obtaining complete tasks:', error);
+      res.status(500).json({ error: 'Error obtaining tasks' });
+    }
+});
+
 exports.onTaskFinalized = functions.database.ref('/tasks/{taskId}')
 	.onUpdate(async (change, context) => {
 		const before = change.before.val();
@@ -44,7 +56,7 @@ exports.onTaskFinalized = functions.database.ref('/tasks/{taskId}')
 				title: after.title,
 				description: after.description,
 				image: after.image,
-				status: after.status,
+				image: after.status,
 				assigned: after.assigned,
 				timestamp: after.timestamp,
 				completed_at: new Date(),

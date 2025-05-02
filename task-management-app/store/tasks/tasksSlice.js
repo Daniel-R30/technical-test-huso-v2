@@ -34,5 +34,4 @@ export const {
     cleanTasks,
     addTask,
     updateTask,
-    deleteTask,
 } = tasksSlice.actions;
