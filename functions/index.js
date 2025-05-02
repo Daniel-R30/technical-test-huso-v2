@@ -1,5 +1,9 @@
-const functions = require('firebase-functions');
+const functions = require('firebase-functions/v1');
 const admin = require('firebase-admin');
+const knex = require('knex');
+const config = require('./knex/knexfile')
+
+const db = knex(config.development);
 
 admin.initializeApp();
 
@@ -24,3 +28,36 @@ exports.updateAssigned = functions.https.onRequest(async (req, res) => {
 		return res.status(500).send('Failed to update assigned');
 	}
 });
+
+exports.onTaskFinalized = functions.database.ref('/tasks/{taskId}')
+	.onUpdate(async (change, context) => {
+		const before = change.before.val();
+		const after = change.after.val();
+		const { taskId } = context.params;
+
+		if (before.status === 'Completed' || after.status !== 'Completed')
+			return null;
+
+		try {
+			await db('completed_tasks').insert({
+				id: taskId,
+				title: after.title,
+				description: after.description,
+				image: after.image,
+				status: after.status,
+				assigned: after.assigned,
+				timestamp: after.timestamp,
+				completed_at: new Date(),
+			});
+
+			await admin.database().ref(`/tasks/${taskId}`).remove();
+
+			functions.logger.info(
+				`Task $ {taskid} moved to postgresql and eliminated from realtime db.`
+			);
+		} catch (error) {
+			functions.logger.error('Error moving task finished:', error);
+		}
+
+		return null;
+	});
