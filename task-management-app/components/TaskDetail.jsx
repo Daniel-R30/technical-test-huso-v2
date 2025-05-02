@@ -1,10 +1,11 @@
-import { Image, Text, View } from 'react-native'
+import { Image, Pressable, Text, ToastAndroid, View } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux';
 import { useTheme } from '../hooks/useTheme';
 import { useMemo } from 'react';
 import { createStyles } from '../styles/styles';
 import { useForm } from '../hooks/useForm';
 import { Picker } from '@react-native-picker/picker';
+import { updateTask } from '../store/tasks/tasksSlice';
 
 const statusItems = [ 'To do', 'In progress', 'Completed' ]
 const assignedItems = [ 'Me', 'Other' ]
@@ -30,6 +31,42 @@ export const TaskDetail = ({ id }) => {
         formState,
         onResetForm
     } = useForm(initialState);
+
+    const updateAssigned = async (id, value) => {
+        const FUNCTION_URL = 'https://us-central1-huso-todo-app-b3d48.cloudfunctions.net/updateAssigned';
+
+        try {
+            const response = await fetch(FUNCTION_URL, {
+                method: "POST",
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    path: `/tasks/${ id }`,
+                    newAssigned: value
+                }),
+            });
+
+            const result = await response.text();
+            console.log("Respuesta del servidor:", result);
+        } catch (err) {
+            console.error("Error al llamar a updateResponsible:", err);
+        }
+    };
+
+    const showToast = (message) => {
+        ToastAndroid.show(message, ToastAndroid.LONG);
+    };
+
+    const onSave = () => {
+        if (initialState.assigned === assigned && initialState.status === status) return showToast('You have not modified any data');
+
+        if(initialState.assigned !== assigned){
+            updateAssigned(task.id, assigned);
+            dispatch(updateTask({ ...task, assigned: assigned }))
+            showToast('The Assigned was changed correctly')
+        }
+    }
 
     return (
         <>
@@ -63,6 +100,13 @@ export const TaskDetail = ({ id }) => {
                     { assignedItems.map((value, index) => <Picker.Item style={ styles.pickerItem } label={ value } value={ value } key={ index } />) }
                 </Picker>
             </View>
+
+            <Pressable
+                style={ [ styles.button, styles.alignSelfEnd ] }
+                onPress={ onSave }
+            >
+                <Text style={ styles.buttonText }>Save</Text>
+            </Pressable>
         </>
     )
 }
