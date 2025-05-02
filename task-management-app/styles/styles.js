@@ -74,6 +74,10 @@ export const createStyles = themeColors =>
 			fontSize: 16,
 			fontWeight: 'bold',
 		},
+        buttonTextInactive: {
+            color: themeColors.text,
+			fontSize: 14,
+        },
 		secundaryButton: {
 			width: '80%',
 			padding: 12,
