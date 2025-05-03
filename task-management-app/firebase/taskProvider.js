@@ -1,4 +1,4 @@
-import { child, get, ref, set, update } from 'firebase/database';
+import { child, get, ref, remove, set, update } from 'firebase/database';
 import { FirebaseDB } from './firebaseConfig';
 
 export const getTasksDB = async () => {
@@ -16,6 +16,7 @@ export const getTasksDB = async () => {
 				errorMessage: 'No data available',
 			};
 		}
+
 	} catch (error) {
 		const errorMessage = error.message;
 		console.error('Error getting tasks from DB:', errorMessage);
@@ -36,6 +37,7 @@ export const addTaskDB = async task => {
 			ok: true,
 			task: task,
 		};
+
 	} catch (error) {
 		const errorMessage = error.message;
 		console.error('Error adding tasks from DB:', errorMessage);
@@ -45,6 +47,25 @@ export const addTaskDB = async task => {
 		};
 	}
 };
+
+export const deleteTaskDB = async taskId => {
+    try {
+        const taskRef = ref(FirebaseDB, `tasks/${taskId}`);
+        await remove(taskRef)
+
+        return {
+            ok: true
+        }
+        
+    } catch (error) {
+        const errorMessage = error.message;
+		console.error('Error deleting tasks from DB:', errorMessage);
+		return {
+			ok: false,
+			errorMessage,
+		};
+    }
+}
 
 export const updateTaskStatusDB = async (taskId, newStatus) => {
 	try {
@@ -58,7 +79,7 @@ export const updateTaskStatusDB = async (taskId, newStatus) => {
 
 	} catch (error) {
 		const errorMessage = error.message;
-		console.error('Error adding tasks from DB:', errorMessage);
+		console.error('Error updating task in DB:', errorMessage);
 		return {
 			ok: false,
 			errorMessage,

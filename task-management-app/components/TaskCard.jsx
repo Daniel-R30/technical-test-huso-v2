@@ -4,21 +4,21 @@ import { useMemo } from 'react';
 import { createCardStyles } from '../styles/taskCardStyle';
 import { useRouter } from 'expo-router';
 
-export const TaskCard = ({ title, description, timestamp, id }) => {
+export const TaskCard = ({ title, description, timestamp, id, status}) => {
     const router = useRouter();
 
     const { themeColors } = useTheme();
     const cardStyles = useMemo(() => createCardStyles(themeColors), [ themeColors ]);
 
     const formatDate = (timestamp) => {
-        return new Date(timestamp).toLocaleDateString('es-ES', {
+        return new Date(parseInt(timestamp)).toLocaleDateString('es-ES', {
             day: '2-digit',
             month: '2-digit',
             year: 'numeric',
         });
     }
     const formatTime = (timestamp) => {
-        return new Date(timestamp).toLocaleTimeString('es-ES', {
+        return new Date(parseInt(timestamp)).toLocaleTimeString('es-ES', {
             hour: 'numeric',
             minute: '2-digit',
             hour12: true,
@@ -26,7 +26,7 @@ export const TaskCard = ({ title, description, timestamp, id }) => {
     }
 
     const goDetail = () => {
-        router.navigate(`/taskDetail?type=view&&id=${id}`)
+        router.navigate(`/taskDetail?type=view&&id=${id}&&status=${status}`)
     }
 
     return (

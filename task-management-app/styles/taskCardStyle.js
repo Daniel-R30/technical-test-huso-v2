@@ -9,6 +9,7 @@ export const createCardStyles = themeColors =>
 			padding: 16,
 			borderRadius: 8,
 			gap: 12,
+			elevation: 2,
 		},
 		title: {
 			color: themeColors.background,

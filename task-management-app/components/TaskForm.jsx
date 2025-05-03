@@ -24,7 +24,7 @@ const formValidations = {
     image: [ (value) => value !== null, 'The image is required' ],
 }
 
-const statusItems = [ 'To do', 'In progress', 'Completed' ]
+const statusItems = [ 'To do', 'In progress' ]
 const assignedItems = [ 'Me', 'Other' ]
 
 export const TaskForm = () => {
@@ -69,12 +69,12 @@ export const TaskForm = () => {
 
         if (!isFormValid) return showToast('Please check the form errors')
 
-        const timestamp= Date.now();
+        const timestamp = Date.now();
 
         const task = {
             ...formState,
-            id: timestamp,
-            timestamp: timestamp
+            id:  timestamp.toString(),
+            timestamp: timestamp.toString(),
         }
 
         dispatch(startAddTasks(task));

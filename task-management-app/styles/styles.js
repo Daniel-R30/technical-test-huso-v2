@@ -18,8 +18,8 @@ export const createStyles = themeColors =>
 		},
 		subtitle: {
 			color: themeColors.text,
-			fontSize: 18,
-			fontWeight: 'regular',
+			fontSize: 20,
+			fontWeight: 'bold',
 		},
 		text: {
 			color: themeColors.text,
@@ -39,29 +39,29 @@ export const createStyles = themeColors =>
 			borderWidth: 1,
 			backgroundColor: themeColors.backgroundColor,
 			color: themeColors.text,
-            fontSize: 16,
+			fontSize: 16,
 		},
 		inputGroup: {
 			width: '100%',
 			flexDirection: 'column',
 			gap: 4,
 		},
-        pickerContainer: {
-            width: '100%',
+		pickerContainer: {
+			width: '100%',
 			borderRadius: 8,
 			borderColor: themeColors.primary,
 			borderWidth: 1,
 			backgroundColor: themeColors.backgroundColor,
-        },
-        picker: {
-            backgroundColor: themeColors.backgroundColor,
-            color: themeColors.text,
-            fontSize: 30,
-        },
-        pickerItem: {
-            backgroundColor: themeColors.backgroundColor,
-            fontSize: 16,
-        },
+		},
+		picker: {
+			backgroundColor: themeColors.backgroundColor,
+			color: themeColors.text,
+			fontSize: 30,
+		},
+		pickerItem: {
+			backgroundColor: themeColors.backgroundColor,
+			fontSize: 16,
+		},
 		button: {
 			width: '80%',
 			padding: 12,
@@ -74,10 +74,10 @@ export const createStyles = themeColors =>
 			fontSize: 16,
 			fontWeight: 'bold',
 		},
-        buttonTextInactive: {
-            color: themeColors.text,
+		buttonTextInactive: {
+			color: themeColors.secondary,
 			fontSize: 14,
-        },
+		},
 		secundaryButton: {
 			width: '80%',
 			padding: 12,
@@ -85,19 +85,19 @@ export const createStyles = themeColors =>
 			backgroundColor: themeColors.secondary,
 			alignItems: 'center',
 		},
-        floatingButton:{
-            width: 60,
-            height: 60,
-            alignItems: 'center',
-            justifyContent: 'center',
-            position: 'absolute',
-            bottom: 20,
-            right: 20,
-            backgroundColor: themeColors.primary,
-            borderRadius: '100%',
-            padding: 12,
-            elevation: 5,
-        },
+		floatingButton: {
+			width: 60,
+			height: 60,
+			alignItems: 'center',
+			justifyContent: 'center',
+			position: 'absolute',
+			bottom: 16,
+			right: 16,
+			backgroundColor: themeColors.secondary,
+			borderRadius: '100%',
+			//elevation: 8,
+            elevation: 20,
+		},
 		columnGroup: {
 			flexDirection: 'column',
 			alignItems: 'center',
@@ -113,19 +113,19 @@ export const createStyles = themeColors =>
 			alignSelf: 'center',
 			marginTop: 'auto',
 		},
-        imageContainer: {
-            width: '100%',
-            height: 250,
-            alignItems: 'center',
-            justifyContent: 'center',
-            padding: 14,
+		imageContainer: {
+			width: '100%',
+			height: 250,
+			alignItems: 'center',
+			justifyContent: 'center',
+			padding: 14,
 			borderRadius: 8,
-            borderWidth: 1,
+			borderWidth: 1,
 			borderColor: themeColors.primary,
 			backgroundColor: themeColors.backgroundColor,
-        },
-        image: {
-            width: '100%',
-            height: '100%'
-        },
+		},
+		image: {
+			width: '100%',
+			height: '100%',
+		},
 	});

@@ -12,8 +12,8 @@ export const TasksList = ({ tasks }) => {
         <FlatList
             data={ tasks }
             keyExtractor={ item => item.id }
-            renderItem={ ( { item: task } ) =>  <TaskCard title={ task.title } description={ task.description } timestamp={ task.timestamp } id={ task.id } /> }
-            contentContainerStyle={ { gap: 8 } }
+            renderItem={ ( { item: task } ) =>  <TaskCard title={ task.title } description={ task.description } timestamp={ task.timestamp } id={ task.id } status={ task.status } /> }
+            contentContainerStyle={ { gap: 12, padding: 8 } }
             showsVerticalScrollIndicator={ false }
             ListEmptyComponent={ <Text style={styles.text} >This list is empty</Text>}
         />

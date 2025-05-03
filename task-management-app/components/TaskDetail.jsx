@@ -1,19 +1,20 @@
 import { Image, Pressable, Text, ToastAndroid, View } from 'react-native'
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useTheme } from '../hooks/useTheme';
 import { useMemo } from 'react';
+import { useRouter } from 'expo-router';
 import { createStyles } from '../styles/styles';
 import { useForm } from '../hooks/useForm';
 import { Picker } from '@react-native-picker/picker';
 import { startUpdateAssignedTask, startUpdateStatusTask } from '../store/tasks/thunks';
+import { startAddCompletedTask } from '../store/CompletedTask/thunks';
 
 const statusItems = [ 'To do', 'In progress', 'Completed' ]
 const assignedItems = [ 'Me', 'Other' ]
 
-export const TaskDetail = ({ id }) => {
-    const task = useSelector(state => state.tasks.tasks.find(task => task.id === parseInt(id)));
-
+export const TaskDetail = ({ task }) => {
     const dispatch = useDispatch();
+    const router = useRouter()
 
     const { themeColors } = useTheme();
     const styles = useMemo(() => createStyles(themeColors), [ themeColors ]);
@@ -34,25 +35,29 @@ export const TaskDetail = ({ id }) => {
     };
 
     const onSave = () => {
-        if (task.status === 'Completed') return showToast('This task has been completed, you cannot edit it.');
-
         if (initialState.assigned === assigned && initialState.status === status) return showToast('You have not modified any data');
 
-        if(initialState.assigned !== assigned){
-            dispatch(startUpdateAssignedTask(task,assigned))
+        if (initialState.assigned !== assigned) {
+            dispatch(startUpdateAssignedTask(task, assigned))
             showToast('The Assigned was changed correctly')
         }
 
-        if(initialState.status !== status){
-            dispatch(startUpdateStatusTask(task,status));
+        if (initialState.status !== status && status !== 'Completed') {
+            dispatch(startUpdateStatusTask(task, status));
             showToast('The Status was changed correctly')
+        }
+
+        if (initialState.status !== status && status === 'Completed'){
+            dispatch(startAddCompletedTask({ ...task, assigned, status  }));
+            showToast('The task was successfully saved as completed')
+            router.replace('/')
         }
     }
 
     return (
         <>
             <Text style={ styles.subtitle }>{ task.title }</Text>
-            <Text style={ styles.subtitle }>{ task.description }</Text>
+            <Text style={ styles.text }>{ task.description }</Text>
 
             <View style={ styles.imageContainer }>
                 <Image style={ styles.image } source={ { uri: task.image } } />
@@ -82,12 +87,15 @@ export const TaskDetail = ({ id }) => {
                 </Picker>
             </View>
 
-            <Pressable
-                style={ [ styles.button, styles.alignSelfEnd ] }
-                onPress={ onSave }
-            >
-                <Text style={ styles.buttonText }>Save</Text>
-            </Pressable>
+            {
+                task.status !== 'Completed' &&
+                <Pressable
+                    style={ [ styles.button, styles.alignSelfEnd ] }
+                    onPress={ onSave }
+                >
+                    <Text style={ styles.buttonText }>Save</Text>
+                </Pressable>
+            }
         </>
     )
 }

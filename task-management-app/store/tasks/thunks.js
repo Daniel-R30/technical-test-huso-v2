@@ -2,9 +2,10 @@ import { uploadTaskPhotoStorage } from '../../firebase/storageProvider';
 import {
 	addTaskDB,
 	getTasksDB,
+    deleteTaskDB,
 	updateTaskStatusDB,
 } from '../../firebase/taskProvider';
-import { addTask, checkingTasks, setTasks, updateTask } from './tasksSlice';
+import { addTask, checkingTasks, deleteTask, setTasks, updateTask } from './tasksSlice';
 
 export const startSetTasks = () => {
 	return async dispatch => {
@@ -36,6 +37,13 @@ export const startUpdateAssignedTask = (task, newAssigned) => {
 		dispatch(updateTask({ ...task, assigned: newAssigned }));
 	};
 };
+
+export const startDeleteTask = id => {
+	return async dispatch => {
+		await deleteTaskDB(id)
+		dispatch(deleteTask(id));
+	};
+}
 
 const updateAssignedTaskDB = async (id, value) => {
 	const FUNCTION_URL =

@@ -18,12 +18,7 @@ export const completeTasksSlice = createSlice({
 			state.completedTasks = [];
 		},
 		addCompletedTask: (state, { payload }) => {
-			state.completedTasks = [...state.tasks, payload];
-		},
-		updateCompletedTask: (state, { payload }) => {
-			state.completedTasks = state.completedTasks.map(task =>
-				task.id === payload.id ? payload : task
-			);
+			state.completedTasks = [...state.completedTasks, payload];
 		},
 	},
 });
@@ -33,5 +28,4 @@ export const {
     setCompletedTasks,
     cleanCompletedTasks,
     addCompletedTask,
-    updateCompletedTask,
 } = completeTasksSlice.actions;

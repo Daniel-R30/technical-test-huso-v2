@@ -1,10 +1,5 @@
-require('dotenv').config();
 const functions = require('firebase-functions/v1');
 const admin = require('firebase-admin');
-const knex = require('knex');
-const config = require('./knex/knexfile')
-
-const db = knex(config.development);
 
 admin.initializeApp();
 
@@ -29,6 +24,14 @@ exports.updateAssigned = functions.https.onRequest(async (req, res) => {
 		return res.status(500).send('Failed to update assigned');
 	}
 });
+
+/* Experimentation Knex with Firebase Functions
+
+require('dotenv').config();
+
+const knex = require('knex');
+const config = require('./knex/knexfile')
+const db = knex(config.development);
 
 exports.getCompletedTasks = functions.https.onRequest(async (req, res) => {
     try {
@@ -72,4 +75,4 @@ exports.onTaskFinalized = functions.database.ref('/tasks/{taskId}')
 		}
 
 		return null;
-	});
+	}); */
